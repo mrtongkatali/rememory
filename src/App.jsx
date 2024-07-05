@@ -1,11 +1,11 @@
-import MemoryGame from "./Components/MemoryGame/index.jsx";
+import MemoryGame from './Components/MemoryGame';
 
 const App = () => {
   return (
     <>
       <MemoryGame />
     </>
-  )
-}  
+  );
+};
 
 export default App;

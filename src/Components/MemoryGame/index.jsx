@@ -8,17 +8,35 @@ import '@/scss/app.scss';
 const MemoryGame = () => {
   const [cards, setCards] = useState([]);
   const [flippedCards, setFlippedCards] = useState([]);
+  const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
+  const [numberOfAttempts, setNumberOfAttempts] = useState(0);
+
+  /*
+    Todo:
+    - Add Button for restarting the game
+    - Record the number of attempts
+    - Implement component for timer
+    - Implement logic for loading different categories and difficulty
+  */
+
+  const resetGame = () => {
+    setIsAlreadyCompleted(false);
+    setFlippedCards([]);
+    setNumberOfAttempts(0);
+  };
 
   const generateGrid = useCallback(() => {
+    resetGame();
+
     const pool = [
       'Crimson',
       'Azure',
-      'Coral',
-      'Lavender',
-      'Turquoise',
-      'Emerald',
-      'Fuchsia',
-      'Amber',
+      // 'Coral',
+      // 'Lavender',
+      // 'Turquoise',
+      // 'Emerald',
+      // 'Fuchsia',
+      // 'Amber',
     ];
 
     const cardsArray = [];
@@ -47,16 +65,23 @@ const MemoryGame = () => {
   const checkMatch = useCallback(() => {
     const isMatched = flippedCards[0] === flippedCards[1];
 
-    const updatedGrid = cards.map((card) =>
+    const updatedCards = cards.map((card) =>
       flippedCards.includes(card.color)
         ? { ...card, flipped: isMatched, matched: isMatched }
         : card
     );
 
+    const isAlreadyCompleted = updatedCards.every(
+      (card) => card.matched === true
+    );
+
+    !isMatched ? setNumberOfAttempts(numberOfAttempts + 1) : null;
+
     setFlippedCards([]);
 
     setTimeout(() => {
-      setCards(updatedGrid);
+      setCards(updatedCards);
+      setIsAlreadyCompleted(isAlreadyCompleted);
     }, 500);
   }, [flippedCards, cards]);
 
@@ -66,7 +91,7 @@ const MemoryGame = () => {
       return;
     }
 
-    if (flippedCards.includes(grid.color)) return;
+    if (grid.flipped) return;
 
     const newMemoryGrid = cards.map((card) =>
       card.id === grid.id ? { ...card, flipped: !card.flipped } : card
@@ -83,11 +108,19 @@ const MemoryGame = () => {
   }, [flippedCards, checkMatch]);
 
   useEffect(() => {
+    if (isAlreadyCompleted) {
+      alert("Congratulations! You've completed the game!");
+      generateGrid();
+    }
+  }, [isAlreadyCompleted]);
+
+  useEffect(() => {
     generateGrid();
   }, [generateGrid]);
 
   return (
     <>
+      <h3>Number of Attemps - {numberOfAttempts}</h3>
       <div className="grid-container">
         {cards.map((card) => (
           <MemoizedCards
@@ -103,7 +136,11 @@ const MemoryGame = () => {
 
 const Cards = ({ card, onClick }) => (
   <div>
-    {!card.flipped && <div className="grid-item" onClick={onClick}>???</div>}
+    {!card.flipped && (
+      <div className="grid-item" onClick={onClick}>
+        ???
+      </div>
+    )}
     {card.flipped && <div className="grid-item">{card.color}</div>}
   </div>
 );
@@ -114,7 +151,7 @@ Cards.propTypes = {
     color: PropTypes.string.isRequired,
   }),
   onClick: PropTypes.func,
-}
+};
 
 const MemoizedCards = React.memo(Cards);
 
