@@ -5,9 +5,11 @@ export const DIFFICULTY_ENUM = {
 };
 
 export const SIZE_ENUM = {
-  FOUR_FOUR: 1,
-  SIX_SIX: 2,
-  EIGHT_EIGHT: 3,
+  FOUR_FOUR: 4,
+  FIVE_FIVE: 5,
+  SIX_SIX: 6,
+  SEVEN_SEVEN: 7,
+  EIGHT_EIGHT: 8,
 };
 
 export const DIFFICULTY_SETTINGS = [
@@ -27,9 +29,8 @@ export const DIFFICULTY_SETTINGS = [
 
 export const SIZE_SETTINGS = [
   {
-    id: SIZE_ENUM.FOUR_FOUR,
     label: '4x4',
-    value: 4,
+    value: SIZE_ENUM.FOUR_FOUR,
     gridSettings: {
       repeat: 4,
       gap: '20px',
@@ -37,13 +38,12 @@ export const SIZE_SETTINGS = [
     },
   },
   {
-    id: SIZE_ENUM.SIX_SIX,
     label: '6x6',
-    value: 6,
+    value: SIZE_ENUM.SIX_SIX,
     gridSettings: {
-      repeat: 8,
+      repeat: 9,
       gap: '15px',
-      height: '120px',
+      height: '100px',
     },
   },
   {
@@ -52,7 +52,7 @@ export const SIZE_SETTINGS = [
     value: 8,
     gridSettings: {
       repeat: 16,
-      gap: '10px',
+      gap: '5px',
       height: '100px',
     },
   },

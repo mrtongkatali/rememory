@@ -24,6 +24,7 @@ const MemoryGame = () => {
   );
   const [gridTemplateColumns, setGridTemplateColumns] = useState({
     gridTemplateColumns: `repeat(6, 1fr)`,
+    gap: '20px',
   });
 
   /*
@@ -45,20 +46,12 @@ const MemoryGame = () => {
 
     setGridTemplateColumns({
       gridTemplateColumns: `repeat(${sizeSettings.gridSettings.repeat}, 1fr)`,
+      gap: sizeSettings.gridSettings.gap,
     });
 
-    // const pool = [
-    //   'Crimson',
-    //   'Azure',
-    //   'Coral',
-    //   'Lavender',
-    //   'Turquoise',
-    //   'Emerald',
-    //   'Fuchsia',
-    //   'Amber',
-    // ];
-
-    const pool = generatePool(sizeSettings.gridSettings.value);
+    const size = sizeSettings.value ** 2 / 2;
+    const pool = generatePool(size);
+    console.log('[INFO] Pool: - ', pool);
 
     const cardsArray = [];
 
