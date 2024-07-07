@@ -12,6 +12,7 @@ import { Form, Select, Button } from 'antd';
 
 // Style
 import '@/scss/components/memory-game/index.scss';
+import { DIFFICULTY_ENUM } from '../../Data/settings';
 
 const MemoryGame = () => {
   const [cards, setCards] = useState([]);
@@ -51,7 +52,6 @@ const MemoryGame = () => {
 
     const size = sizeSettings.value ** 2 / 2;
     const pool = generatePool(size, difficultySettings.value);
-    console.log('[INFO] Pool: - ', pool);
 
     const cardsArray = [];
 
@@ -96,7 +96,7 @@ const MemoryGame = () => {
     setTimeout(() => {
       setCards(updatedCards);
       setIsAlreadyCompleted(isAlreadyCompleted);
-    }, 500);
+    }, 1000);
   }, [flippedCards, cards, numberOfAttempts]);
 
   const flippedCard = (grid) => {
@@ -167,13 +167,21 @@ const MemoryGame = () => {
 
       <h3>Number of Attemps - {numberOfAttempts}</h3>
       <div className="card-container" style={gridTemplateColumns}>
-        {cards.map((card) => (
-          <MemoizedCards
-            key={card.id}
-            card={card}
-            onClick={() => flippedCard(card)}
-          />
-        ))}
+        {cards.map((card) =>
+          difficultySettings.value !== DIFFICULTY_ENUM.EASY ? (
+            <MemoizedCards
+              key={card.id}
+              card={card}
+              onClick={() => flippedCard(card)}
+            />
+          ) : (
+            <MemoizedImageCards
+              key={card.id}
+              card={card}
+              onClick={() => flippedCard(card)}
+            />
+          )
+        )}
       </div>
     </>
   );
@@ -182,11 +190,16 @@ const MemoryGame = () => {
 const ImageCards = ({ card, onClick }) => (
   <div>
     {!card.flipped && (
-      <div className="card-item" onClick={onClick}>
+      <div className="card-item card-image" onClick={onClick}>
         ???
       </div>
     )}
-    {card.flipped && <div className="card-item">{card.value}</div>}
+    {card.flipped && (
+      <div
+        className="card-image"
+        style={{ backgroundImage: `url(/images/${card.value}.jpg)` }}
+      />
+    )}
   </div>
 );
 
@@ -212,7 +225,7 @@ Cards.propTypes = {
 ImageCards.propTypes = {
   card: PropTypes.shape({
     flipped: PropTypes.bool.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.any,
   }),
   onClick: PropTypes.func,
 };
