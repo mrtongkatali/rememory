@@ -50,7 +50,7 @@ const MemoryGame = () => {
     });
 
     const size = sizeSettings.value ** 2 / 2;
-    const pool = generatePool(size);
+    const pool = generatePool(size, difficultySettings.value);
     console.log('[INFO] Pool: - ', pool);
 
     const cardsArray = [];
@@ -179,6 +179,17 @@ const MemoryGame = () => {
   );
 };
 
+const ImageCards = ({ card, onClick }) => (
+  <div>
+    {!card.flipped && (
+      <div className="card-item" onClick={onClick}>
+        ???
+      </div>
+    )}
+    {card.flipped && <div className="card-item">{card.value}</div>}
+  </div>
+);
+
 const Cards = ({ card, onClick }) => (
   <div>
     {!card.flipped && (
@@ -198,6 +209,15 @@ Cards.propTypes = {
   onClick: PropTypes.func,
 };
 
+ImageCards.propTypes = {
+  card: PropTypes.shape({
+    flipped: PropTypes.bool.isRequired,
+    value: PropTypes.string.isRequired,
+  }),
+  onClick: PropTypes.func,
+};
+
 const MemoizedCards = React.memo(Cards);
+const MemoizedImageCards = React.memo(ImageCards);
 
 export default MemoryGame;

@@ -2,13 +2,9 @@ import { faker } from '@faker-js/faker';
 import { DIFFICULTY_ENUM } from '@/Data/settings.js';
 
 export const generatePool = (size, category) => {
-  const uniqueDataGenerator = (newSize, generatorFunction) => {
+  const uniqueDataGenerator = (generatorFunction) => {
     const uniqueData = new Set();
-    const MAX_ATTEMPTS = 1000;
-
-    // while (uniqueData.size < size) {
-    //   uniqueData.add(generatorFunction());
-    // }
+    const MAX_ATTEMPTS = size * 10;
 
     for (let i = 0; i < MAX_ATTEMPTS && uniqueData.size < size; i++) {
       uniqueData.add(generatorFunction());
@@ -21,9 +17,17 @@ export const generatePool = (size, category) => {
     return Array.from(uniqueData);
   };
 
-  const EASY_POOL_CATEGORIES = [faker.music.songName, faker.word.adjective];
+  const numberGenerator = (minNumber = 1, maxNumber = 40) => {
+    minNumber = Math.ceil(minNumber);
+    maxNumber = Math.floor(maxNumber);
+    return Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
+  };
 
-  const MEDIUM_POOL_CATEGORIES = [
+  let categories = [];
+
+  const MEDIUM_POOL_CATEGORIES = [faker.music.songName, faker.word.adjective];
+
+  const HARD_POOL_CATEGORIES = [
     faker.animal.bird,
     faker.animal.cat,
     faker.animal.cetacean,
@@ -34,11 +38,19 @@ export const generatePool = (size, category) => {
     faker.animal.insect,
   ];
 
-  const HARD_POOL_CATEGORIES = [
-    faker.number.float({ min: 10, max: 100, multipleOf: 0.02 }),
-  ];
+  switch (category) {
+    case DIFFICULTY_ENUM.EASY:
+      categories = numberGenerator;
+      break;
+    case DIFFICULTY_ENUM.MEDIUM:
+      categories = MEDIUM_POOL_CATEGORIES[numberGenerator(0, 1)];
+      break;
+    default:
+      categories = HARD_POOL_CATEGORIES[numberGenerator(0, 7)];
+      break;
+  }
 
-  return uniqueDataGenerator(size, () => MEDIUM_POOL_CATEGORIES[0]());
+  return uniqueDataGenerator(() => categories());
 
   //   if (category === DIFFICULTY_ENUM.EASY) {
   //     //
