@@ -15,6 +15,7 @@ import '@/scss/components/memory-game/index.scss';
 import { DIFFICULTY_ENUM } from '../../Data/settings';
 
 const MemoryGame = () => {
+  const [allowFlip, setAllowFlip] = useState(true);
   const [cards, setCards] = useState([]);
   const [flippedCards, setFlippedCards] = useState([]);
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
@@ -30,8 +31,8 @@ const MemoryGame = () => {
 
   /*
     Todo:
-    - Add Button for restarting the game
-    - Record the number of attempts (done)
+    - use different keys for images?
+    - check bug when cards are doesnt match even matched 
     - Implement component for timer
     - Implement logic for loading different categories and difficulty
   */
@@ -96,6 +97,7 @@ const MemoryGame = () => {
     setTimeout(() => {
       setCards(updatedCards);
       setIsAlreadyCompleted(isAlreadyCompleted);
+      setAllowFlip(true);
     }, 1000);
   }, [flippedCards, cards, numberOfAttempts]);
 
@@ -105,7 +107,7 @@ const MemoryGame = () => {
       return;
     }
 
-    if (grid.flipped) return;
+    if (grid.flipped || !allowFlip) return;
 
     const newMemoryGrid = cards.map((card) =>
       card.id === grid.id ? { ...card, flipped: !card.flipped } : card
@@ -117,6 +119,7 @@ const MemoryGame = () => {
 
   useEffect(() => {
     if (flippedCards.length > 1) {
+      setAllowFlip(false);
       checkMatch();
     }
   }, [flippedCards, checkMatch]);
