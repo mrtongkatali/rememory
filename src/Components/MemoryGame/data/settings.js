@@ -34,21 +34,26 @@ export const SIZE_SETTINGS = [
   {
     id: SIZE_ENUM.FOUR_FOUR,
     name: '4x4',
+    value: 4,
   },
   {
     id: SIZE_ENUM.FIVE_FIVE,
     name: '5x5',
+    value: 5,
   },
   {
     id: SIZE_ENUM.SIX_SIX,
     name: '6x6',
+    value: 6,
   },
   {
     id: SIZE_ENUM.SEVEN_SEVEN,
     name: '7x7',
+    vaue: 7,
   },
   {
     id: SIZE_ENUM.EIGHT_EIGHT,
     name: '8x8',
+    value: 8,
   },
 ];

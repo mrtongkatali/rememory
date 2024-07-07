@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { shuffle } from 'lodash/collection';
 import { nanoid } from 'nanoid';
 
-import '@/scss/app.scss';
+import '@/scss/components/memory-game/index.scss';
 
 const MemoryGame = () => {
   const [cards, setCards] = useState([]);
@@ -41,9 +41,9 @@ const MemoryGame = () => {
 
     const cardsArray = [];
 
-    pool.map((color) => {
+    pool.map((value) => {
       const defaultSettings = {
-        color,
+        value,
         flipped: false,
         matched: false,
       };
@@ -66,7 +66,7 @@ const MemoryGame = () => {
     const isMatched = flippedCards[0] === flippedCards[1];
 
     const updatedCards = cards.map((card) =>
-      flippedCards.includes(card.color)
+      flippedCards.includes(card.value)
         ? { ...card, flipped: isMatched, matched: isMatched }
         : card
     );
@@ -98,7 +98,7 @@ const MemoryGame = () => {
     );
 
     setCards(newMemoryGrid);
-    setFlippedCards([...flippedCards, ...[grid.color]]);
+    setFlippedCards([...flippedCards, ...[grid.value]]);
   };
 
   useEffect(() => {
@@ -141,14 +141,14 @@ const Cards = ({ card, onClick }) => (
         ???
       </div>
     )}
-    {card.flipped && <div className="grid-item">{card.color}</div>}
+    {card.flipped && <div className="grid-item">{card.value}</div>}
   </div>
 );
 
 Cards.propTypes = {
   card: PropTypes.shape({
     flipped: PropTypes.bool.isRequired,
-    color: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
   }),
   onClick: PropTypes.func,
 };
