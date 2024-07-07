@@ -5,6 +5,28 @@ import MemoryGame from './Components/MemoryGame';
 
 const { Header, Footer, Content } = Layout;
 
+const defaultLayoutStyle = {
+  minHeight: '100vh',
+};
+
+const defaultHeaderStyle = {
+  position: 'fixed',
+  zIndex: 1,
+  width: '100%',
+};
+
+const defaultLogoStyle = {
+  float: 'left',
+  color: 'white',
+  fontSize: '20px',
+  paddingRight: '20px',
+};
+
+const defaultContentStyle = {
+  padding: '0 20px',
+  marginTop: 64,
+};
+
 const App = () => {
   const menuItems = [
     {
@@ -18,23 +40,15 @@ const App = () => {
     },
   ];
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
-        <div
-          className="logo"
-          style={{
-            float: 'left',
-            color: 'white',
-            fontSize: '20px',
-            paddingRight: '20px',
-          }}
-        >
+    <Layout style={defaultLayoutStyle}>
+      <Header style={defaultHeaderStyle}>
+        <div className="logo" style={defaultLogoStyle}>
           Rememory
         </div>
         <Menu theme="dark" mode="horizontal" items={menuItems} />
       </Header>
-      <Content style={{ padding: '0 50px', marginTop: 64 }}>
-        <div style={{ padding: 24, minHeight: 380 }}>
+      <Content style={defaultContentStyle}>
+        <div className="content-wrapper">
           <MemoryGame />
         </div>
       </Content>

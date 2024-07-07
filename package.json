@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "5.3.7",
+    "@faker-js/faker": "8.4.1",
     "antd": "5.19.0",
     "lodash": "4.17.21",
     "nanoid": "5.0.7",

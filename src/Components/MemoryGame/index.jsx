@@ -1,10 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+
+// Helpers
 import { shuffle } from 'lodash/collection';
 import { nanoid } from 'nanoid';
-import { FloatButton } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { generatePool } from '@/Helpers/Generator';
+import { SIZE_SETTINGS, DIFFICULTY_SETTINGS } from '@/Data/settings';
 
+// Ant
+import { Form, Select, Button } from 'antd';
+
+// Style
 import '@/scss/components/memory-game/index.scss';
 
 const MemoryGame = () => {
@@ -12,11 +18,18 @@ const MemoryGame = () => {
   const [flippedCards, setFlippedCards] = useState([]);
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
   const [numberOfAttempts, setNumberOfAttempts] = useState(0);
+  const [sizeSettings, setSizeSettings] = useState(SIZE_SETTINGS[0]);
+  const [difficultySettings, setDifficultySettings] = useState(
+    DIFFICULTY_SETTINGS[0]
+  );
+  const [gridTemplateColumns, setGridTemplateColumns] = useState({
+    gridTemplateColumns: `repeat(6, 1fr)`,
+  });
 
   /*
     Todo:
     - Add Button for restarting the game
-    - Record the number of attempts
+    - Record the number of attempts (done)
     - Implement component for timer
     - Implement logic for loading different categories and difficulty
   */
@@ -27,19 +40,25 @@ const MemoryGame = () => {
     setNumberOfAttempts(0);
   };
 
-  const generateGrid = useCallback(() => {
+  const generateCards = () => {
     resetGame();
 
-    const pool = [
-      'Crimson',
-      'Azure',
-      'Coral',
-      'Lavender',
-      'Turquoise',
-      'Emerald',
-      'Fuchsia',
-      'Amber',
-    ];
+    setGridTemplateColumns({
+      gridTemplateColumns: `repeat(${sizeSettings.gridSettings.repeat}, 1fr)`,
+    });
+
+    // const pool = [
+    //   'Crimson',
+    //   'Azure',
+    //   'Coral',
+    //   'Lavender',
+    //   'Turquoise',
+    //   'Emerald',
+    //   'Fuchsia',
+    //   'Amber',
+    // ];
+
+    const pool = generatePool(sizeSettings.gridSettings.value);
 
     const cardsArray = [];
 
@@ -62,7 +81,7 @@ const MemoryGame = () => {
     });
 
     setCards(shuffle(cardsArray));
-  }, []);
+  };
 
   const checkMatch = useCallback(() => {
     const isMatched = flippedCards[0] === flippedCards[1];
@@ -85,7 +104,7 @@ const MemoryGame = () => {
       setCards(updatedCards);
       setIsAlreadyCompleted(isAlreadyCompleted);
     }, 500);
-  }, [flippedCards, cards]);
+  }, [flippedCards, cards, numberOfAttempts]);
 
   const flippedCard = (grid) => {
     if (grid.matched) {
@@ -112,18 +131,49 @@ const MemoryGame = () => {
   useEffect(() => {
     if (isAlreadyCompleted) {
       alert("Congratulations! You've completed the game!");
-      generateGrid();
+      generateCards();
     }
   }, [isAlreadyCompleted]);
 
-  useEffect(() => {
-    generateGrid();
-  }, [generateGrid]);
-
   return (
     <>
+      <div>
+        <Form layout="inline">
+          <Form.Item label="Size">
+            <Select
+              defaultValue={SIZE_SETTINGS[0]}
+              style={{ width: 120 }}
+              options={SIZE_SETTINGS}
+              onChange={(value) => {
+                const size = SIZE_SETTINGS.find((size) => size.value === value);
+                setSizeSettings(size);
+              }}
+            />
+          </Form.Item>
+
+          <Form.Item label="Difficulty">
+            <Select
+              defaultValue={DIFFICULTY_SETTINGS[0]}
+              style={{ width: 120 }}
+              options={DIFFICULTY_SETTINGS}
+              onChange={(value) => {
+                const difficulty = DIFFICULTY_SETTINGS.find(
+                  (difficulty) => difficulty.value === value
+                );
+                setDifficultySettings(difficulty);
+              }}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" onClick={() => generateCards()}>
+              Generate
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+
       <h3>Number of Attemps - {numberOfAttempts}</h3>
-      <div className="grid-container">
+      <div className="card-container" style={gridTemplateColumns}>
         {cards.map((card) => (
           <MemoizedCards
             key={card.id}
@@ -132,13 +182,6 @@ const MemoryGame = () => {
           />
         ))}
       </div>
-      <FloatButton
-        shape="circle"
-        type="primary"
-        size="large"
-        style={{ right: 94 }}
-        icon={<SettingOutlined />}
-      />
     </>
   );
 };
@@ -146,11 +189,11 @@ const MemoryGame = () => {
 const Cards = ({ card, onClick }) => (
   <div>
     {!card.flipped && (
-      <div className="grid-item" onClick={onClick}>
+      <div className="card-item" onClick={onClick}>
         ???
       </div>
     )}
-    {card.flipped && <div className="grid-item">{card.value}</div>}
+    {card.flipped && <div className="card-item">{card.value}</div>}
   </div>
 );
 
