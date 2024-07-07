@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { shuffle } from 'lodash/collection';
 import { nanoid } from 'nanoid';
+import { FloatButton } from 'antd';
+import { SettingOutlined } from '@ant-design/icons';
 
 import '@/scss/components/memory-game/index.scss';
 
@@ -31,12 +33,12 @@ const MemoryGame = () => {
     const pool = [
       'Crimson',
       'Azure',
-      // 'Coral',
-      // 'Lavender',
-      // 'Turquoise',
-      // 'Emerald',
-      // 'Fuchsia',
-      // 'Amber',
+      'Coral',
+      'Lavender',
+      'Turquoise',
+      'Emerald',
+      'Fuchsia',
+      'Amber',
     ];
 
     const cardsArray = [];
@@ -130,6 +132,13 @@ const MemoryGame = () => {
           />
         ))}
       </div>
+      <FloatButton
+        shape="circle"
+        type="primary"
+        size="large"
+        style={{ right: 94 }}
+        icon={<SettingOutlined />}
+      />
     </>
   );
 };
