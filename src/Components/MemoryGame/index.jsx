@@ -168,7 +168,7 @@ const MemoryGame = () => {
         </Form>
       </div>
 
-      <h3>Number of Attemps - {numberOfAttempts}</h3>
+      <h3>Number of Attempts - {numberOfAttempts}</h3>
       <div className="card-container" style={gridTemplateColumns}>
         {cards.map((card) =>
           difficultySettings.value !== DIFFICULTY_ENUM.EASY ? (
