@@ -31,10 +31,11 @@ const MemoryGame = () => {
 
   /*
     Todo:
-    - use different keys for images?
-    - check bug when cards are doesnt match even matched 
+    - use keyboard keys to navigate?
     - Implement component for timer
-    - Implement logic for loading different categories and difficulty
+    - Improve transition effects when opening cards
+    - Improve overall UI
+    - Leaderboard (!!)
   */
 
   const resetGame = () => {
