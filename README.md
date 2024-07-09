@@ -2,7 +2,7 @@
 
 A "simple" [memory game](https://en.wikipedia.org/wiki/Concentration_(card_game)) (for now) built using ReactJS. At the moment, it doesn't include any backend services. Instead, I'm using [FakerJS](https://fakerjs.dev/) to generate the data for me. 
 
-This project is currently in development and I’m working on it during my free time only. I’m excited to see how it evolves and progresses. 🤞
+This project is currently in development and I’m working on it during my free time only. I’m excited to see how this evolves and progresses over time. 🤞
 
 <br>
 
